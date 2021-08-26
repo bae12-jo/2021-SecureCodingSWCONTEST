@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-
+from group.models import Record
 from common import forms
 
 
@@ -20,13 +20,16 @@ class User(AbstractUser):
     PASSWORD_FIELD='password'
     REQUIRED_FIELDS=['email']
 
+    #개인 정보
     phone = models.CharField(max_length=20,default=None)
     address = models.CharField(max_length=50,default=None)
-    # Account = models.CharField(max_length=50)
-    balance = models.CharField(max_length=50,default=None)
-    create_date = models.DateTimeField(default=timezone.make_aware(timezone.datetime.max, timezone.get_default_timezone()))
-    # record = models.OnetoOneField(Record, on_delete=models.CASCADE)
 
+    #돈
+    balance = models.CharField(max_length=50,default=None)
+    record = models.OnetoManyField(Record, on_delete=models.CASCADE)
+    
+    #그룹
+    groups=models.ForeignKey(Group,on_delete=models.PROTECT)
     def str(self):
         return self.email
 '''

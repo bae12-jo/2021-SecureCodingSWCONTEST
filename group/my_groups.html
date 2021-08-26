@@ -1,4 +1,4 @@
-{% extends 'templates/base.html' %}
+{% extends 'base.html' %}
 
 {%block title%}
     <h1>Welcome {{username}}</h1>
@@ -13,7 +13,6 @@
             <div class="My Groups">
                 <h3>My Groups</h3>
             </div>
-
             {% for g in groups %}
                 <div class="col-4">
                     <div class="card">
@@ -25,32 +24,34 @@
                         </div>
                     </div>
                 </div>
+            {% empty %}
+            <p> You are not included in any groups yet</p>
             {% endfor %}
 
 
         </div>
     </div>
+
+    <!--paginator-->
     {% if groups.has_other_pages %}
     <ul class="pagination">
         {% if groups.has_previous %}
-        <li><a href=""?page="{{groups.previous_page_number}}">&laquo;</a></li>
-        {% else %}
-        <li class="disabled"><span>&laquo;</span></li>
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>{% else %}
         {% endif %}
-        {% for i in groups.paginator.page_range %}
-            {% if groups.number==i %}
-                <li class="active"><span>{{i}}<span class="sr-only">(current)</span></span></li>
-            {% else %}
-                <li><a href="?page={{i}}">{{i}}</a></li>
-            {% endif%}
-        {% endfor %}
-        {% if groups.has_next %}
-                <li><a href="?page={{groups.next_page_number}}">&raquo;</a></li>
-        {% else %}
-                <li class="disabled"><span>&raquo;</span></li>
+
+        <span class="current">
+            Page{{page_obj.number}} of {{page_obj.paginator.num_pages}}.
+        </span>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number}}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
         {% endif %}
+        </span>
     </ul>
 
+    {% endif %}
 
-    
+
+
 {%endblock %}

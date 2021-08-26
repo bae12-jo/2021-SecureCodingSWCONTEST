@@ -1,48 +1,36 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate
-from .forms import NameForm,RegiForm
-#DataFlair #Views #TemplateInheritance
+from .forms import *
+from django.contrib.auth.hashers import make_password
+
 # Create your views here.
 
-
 def login(request):
-
-    # if this is a POST request we need to process the form data
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = NameForm(request.POST)
-        # check whether it's valid:
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            identifier=form.cleaned_data['identifier']
-            secret=form.cleaned_data['secret']
-            user=authenticate(username=identifier,password=secret)
-            if user is not None:
-            # redirect to a new URL:
-                return HttpResponseRedirect('group/my_groups/')
-        else:
-            return HttpResponseRedirect('registration/')
-
-    # if a GET (or any other method) we'll create a blank form
+    if request.method=='POST':
+        form=CustomUserCreationForm(request.POST)
     else:
-        form = NameForm()
+        form=CustomUserCreationForm()
+    return render(request,'login.html',{'form':form})
 
-    return render(request, 'login.html', {'form': form})
 
-def registration(request):
-    # if this is a POST request we need to process the form data
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = RegiForm(request.POST)
-        # check whether it's valid:
+def signup(request):
+    """
+    계정생성
+    """
+    if request.method == "POST":
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            # process the data in form.cleaned_data as required
-                # redirect to a new URL:
-            return HttpResponseRedirect('group/my_groups/')
-
-    # if a GET (or any other method) we'll create a blank form
+            form.save()
+            username = form.cleaned_data.get('username')
+            password =make_password(form.cleaned_data.get('password'))
+            #if form.clean_password2:
+            user = authenticate(username=username, password=password)  # 사용자 인증
+            login(request)  # 로그인
+            #return redirect('qna/list')
+            return HttpResponseRedirect("groups/my_groups")
     else:
-        form = RegiForm()
+        form = CustomUserCreationForm()
+    return render(request, 'register.html', {'form': form})
 
-    return render(request, 'registration.html', {'form': form}) 
+

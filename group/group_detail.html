@@ -1,0 +1,45 @@
+{% extends 'templates/base.html' %}
+
+
+{% block title %}
+    <h1>{{group.group_name}}</h1>
+{% endblock %}
+{% block body %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<!--기본 정보-->
+    <div class="left">
+        <div class="col-4">
+            <p>
+                Deposit: {{group.deposit}}</br>
+                Fine: {{group.fine}}/per fault</br>
+                Reward Method: {{group.reward}}</br>
+                Rule:</br>
+                {{group.rule}}
+            </p>
+        </div>
+    </div>
+<!--팀원별 벌금(혹은 상금) 그래프-->
+    <div class="right">
+        <div class="col-4">
+
+        </div>
+    </div>
+    <!--버튼 설명
+    (1) 결제버튼: 자신이 자신에 대해 누르는 것이므로 바로 결제된다
+    (2) 팀 리더에게만 보이는 버튼으로 수정 버튼이다.
+    해결해야 하는 것: 팀 리더가 edit 버튼을 눌렀을 때 멤버가 결제 버튼을 눌러서는 안된다.
+    -->
+    <div class="right">
+            <a target="_blank" class="btn btn-info pull-right"
+               href="{% url pay_fine%}">
+                Pay Fine
+            </a>
+            </br>
+            {% if user==group.leader %}<!--아직 group에 정의 안됨-->
+                <a target="_blank" class="btn btn-info pull-right"
+                   href="{%url edit %}">
+                    Edit
+                </a>
+            {% endif %}
+    </div>
+{% endblock %}

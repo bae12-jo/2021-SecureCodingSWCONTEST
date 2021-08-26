@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<style>
+	*{
+		box-sizing:boarder-box;
+	}
+	.main{
+		float:left;
+		width: 60%;
+		padding: 0 20px;
+		text-align: center;
+	}
+	@media only screen and (max-width:620px){
+		.main{
+		width:100%;
+		}
+	}
+	</style>
+
+</head>
+
+<body>
+<div style="background-color:#e5e5e5;padding:15px;text-align:center;">
+  <h1>Log in</h1>
+</div>
+
+<div class="main">
+<form action="/login/" method="post"><!--/log in/ is return url-->
+	{% csrf_token %}
+	{{form}}
+	<input type="submit" value= "Log in">
+</form>
+</div>
+</body>
+</html>

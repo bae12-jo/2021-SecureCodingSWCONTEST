@@ -20,7 +20,7 @@ def login(request):
             user=authenticate(username=identifier,password=secret)
             if user is not None:
             # redirect to a new URL:
-                return HttpResponseRedirect('my_groups/')
+                return HttpResponseRedirect('group/my_groups/')
         else:
             return HttpResponseRedirect('registration/')
 
@@ -39,7 +39,7 @@ def registration(request):
         if form.is_valid():
             # process the data in form.cleaned_data as required
                 # redirect to a new URL:
-            return HttpResponseRedirect('my_groups/')
+            return HttpResponseRedirect('group/my_groups/')
 
     # if a GET (or any other method) we'll create a blank form
     else:

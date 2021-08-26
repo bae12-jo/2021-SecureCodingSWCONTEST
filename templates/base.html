@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HomePage</title>
+    <style>
+        .banner{
+            font-size: 20vw;
+        }
+        .title{
+            font-size:50vw;
+        }
+        .main{
+            float:left;
+            width: 60%;
+            padding: 0 20px;
+            text-align: center;
+	    }   
+        @media only screen and (max-width:620px){
+            .main{
+            width:100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <left>
+            <--!logo-->
+    </left>
+    <right>
+        <div style="banner">
+         <a href="{% url 'login'%}">Logout</a>
+         <input type="image" src="../media/my_groups.svg" name="my_groups" width="38vw" height="38vw" alt="my_groups"/>
+         <input type="image" src="../media/new_groups.svg" name="new_groups" width="38vw" height="38vw" alt="new_groups"/>
+         <input type="image" src="../media/wallet.svg" name="wallet" width="38vw" height="38vw" alt="wallet"/>
+         <input type="image" src="../media/alarm.svg" name="alarm" width="38vw" height="38vw" alt="alarm"/>
+        </div>
+    </right>
+   
+
+    
+    <center>
+        <div style="title">
+            {% block title %}
+            {% endblock %}
+        </div>
+        
+        <div style="main">
+            {% block body %}
+            {% endblock %}
+        </div>
+    </center>
+</body>
+</html>

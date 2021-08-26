@@ -1,0 +1,10 @@
+{% if question_list %}
+    <ul>
+    {% for question in question_list %}
+        <li><a href="{% url 'qna:detail' question.id %}">{{ question.subject }}</a></li>
+    {% endfor %}
+    <a href="{% url 'qna:question_create' %}" class="btn btn-primary">질문 등록하기</a>
+    </ul>
+{% else %}
+    <p>There is no question.</p>
+{% endif %}

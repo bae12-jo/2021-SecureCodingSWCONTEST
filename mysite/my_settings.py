@@ -1,7 +1,7 @@
 DATABASES = {
     'default' : {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'studymanage_db',
+        'NAME': 'greenbalm_db',
         'USER': 'root',
         'PASSWORD': '1234',
         'HOST': '127.0.0.1',

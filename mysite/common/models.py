@@ -1,43 +1,60 @@
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
-from django.contrib.auth.models import AbstractUser
-# Create your models here.
-from django.utils import timezone
-from django.utils.translation import gettext_lazy as _
-# from group.models import Record
-# from common import forms
+from django.conf import settings
 
+class UserManager(BaseUserManager):
+    def create_user(self, username, email, address, phone_number, password=None):
+        if not username:
+            raise ValueError('must have user email')
+        if not email:
+            raise ValueError('must have user email')
+        user = self.model(
+            username=username,
+            email=self.normalize_email(email),
+            address=address,
+            phone_number=phone_number
+        )
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
 
-class User(AbstractUser):
-    #pre-set
+    def create_superuser(self, username, email, address, phone_number, password):
+        user = self.create_user(
+            username=username,
+            email=self.normalize_email(email),
+            address=address,
+            phone_number=phone_number,
+            password=password
+        )
+        user.is_admin = True
+        user.save(using=self._db)
+        return user
 
-    username = models.CharField(max_length=10,unique=True)
-    password = models.CharField(max_length=100,default="")
+class User(AbstractBaseUser):
+    username = models.CharField(max_length=100,unique=True)
+    email = models.EmailField(max_length=255,unique=True)
+    address = models.CharField(max_length=200)
+    phone_number = models.CharField(max_length=20)
+    is_active = models.BooleanField(default=True)
+    is_admin = models.BooleanField(default=False)
 
-    #optional
-    # email=models.EmailField(_('email address',widget=forms.EmailInput({'placeholder': 'test@example.com'})),unique=True)
+    objects = UserManager()
 
-    USERNAME_FIELD='username'
-    PASSWORD_FIELD='password'
-    REQUIRED_FIELDS=['email']
+    class Meta:
+        db_table = 'user'
 
-    #개인 정보
-    phone = models.CharField(max_length=20,default=None)
-    address = models.CharField(max_length=50,default=None)
-
-    #돈
-    balance = models.CharField(max_length=50,default=None)
-    # record = models.OnetoManyField(Record, on_delete=models.CASCADE)
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email','address','phone_number']
     
-    #그룹
-    # groups=models.ForeignKey(Group,on_delete=models.PROTECT)
-    def str(self):
-        return self.email
+    def __str__(self):
+        return self.username
+        
+def has_perm(self, perm, obj=None):
+    return True
 
+def has_module_perms(self, app_label):
+    return True
 
-# class User(models.Model):
-#     pass
-# #create test user --d
-# user=User.objects.create_user('green','admin@greenbalm.com','balm')
-# user.first_name='yeonkoung'
-# user.last_name='kim'
-# user.save()
+@property
+def is_staff(self):
+    return self.is_admin

@@ -17,8 +17,8 @@ class OrderReq(models.Model):
     # form = MyForm(initial={'pay_check':True))
 
     def __str__(self):
-        return str(self.id) # id값 어디에 존재하는지,,
-
+        return str(self.id)
+    
     def get_total_price(self):
         total_price = self.price
 

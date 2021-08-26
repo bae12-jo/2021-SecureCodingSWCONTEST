@@ -39,6 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+     'common',
+    'group',
+    'wallet',
+    'alarm',
 ]
 
 MIDDLEWARE = [
@@ -52,12 +56,13 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'config.urls'
-
+#ÏõêÎûò dirs: os.path.join(BASE_DIR, 'templates') Îã§Î¶Ñ!
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'templates')
+            
+            'root/templates/' 
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -84,6 +89,8 @@ DATABASES = {
     }
 }
 
+#User authentication NEW
+AUTH_USER_MODEL='common.User'#Îã§Î¶Ñ
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -123,11 +130,11 @@ USE_TZ = True
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# 404  ø°∑Ø∂‰ ¿Ãµ˚∞° «—π¯ ∫¡¡÷ººø‰!
-STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static")
-STATIC_URL = '/static/'
+# 404  ÏóêÎü¨Îú∏ Ïù¥Îî∞Í∞Ä ÌïúÎ≤à Î¥êÏ£ºÏÑ∏Ïöî!
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "root")
+STATIC_URL = '/root/static/' #Îã§Î¶Ñ
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, 'root/static"),
 ]
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media")
@@ -136,3 +143,4 @@ MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media")
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+LOGIN_REDIRECT_URL='groups/my_group'#Îã§Î¶Ñ

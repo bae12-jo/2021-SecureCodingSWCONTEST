@@ -1,6 +1,5 @@
 from django.db import models
 from django.urls import reverse
-
 from common.models import User
 # Create your models here.
 class Group(models.Model):
@@ -45,12 +44,12 @@ class Record(models.Model):
         Group,
         on_delete=models.CASCADE
     )
-    '''
-    associated_user=models.OneToOneField{
+
+    associated_user=models.OneToOneField(
         User,
         on_delete=models.CASCADE
-    }
-    '''
+    )
+
     total_fine=models.FloatField()
     fine_count=models.IntegerField()
 

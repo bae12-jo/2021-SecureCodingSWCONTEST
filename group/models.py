@@ -1,34 +1,35 @@
+from django.db.models import ManyToManyField
 from django.db import models
 from django.urls import reverse
-from common.models import User
 # Create your models here.
 class Group(models.Model):
     #이름
-    group_name=models.CharField(max_length=100)
+    group_name=models.CharField(max_length=100,primary_key=True)
     #돈 관련 사항
-    deposit=models.FloatField()
-    fine=models.FloatField()
+    deposit=models.FloatField(null=True)
+    fine=models.FloatField(null=True)
     REWARD_CHOICES=[
         (1,' 1/N, N=number of members'),
         (2,' All to the single winner'),
     ]
-    reward=models.CharField(choices=REWARD_CHOICES, max_length=100)
+    reward=models.CharField(choices=REWARD_CHOICES, max_length=100,null=True)
     #사람
-    teammate=models.ForeignKey(
-        User,
-        on_delete=models.PROTECT,
+
+    teammate=ManyToManyField(
+        'common.User',
         related_name='teammates',
-        related_query_name='teammate'
+        related_query_name='teammate',
 
     )
-    leader=models.OneToOneField(
-        User,
+    leader=models.ForeignKey(
+        'common.User',
         on_delete=models.CASCADE,
-        default=None
+        default=None,
     )
+
     #규칙
-    rule=models.CharField(max_length=500)
-    can_pay=models.BooleanField(default=True)
+    rule=models.CharField(max_length=500,null=True)
+    can_pay=models.BooleanField(default=True,)
     class Meta:
         ordering=['group_name']
         verbose_name='group'
@@ -38,18 +39,4 @@ class Group(models.Model):
     def get_absolute_url(self):
         return reverse('my_groups_detail',args=[str(self.group_name)])
 
-
-class Record(models.Model):
-    associated_group=models.OneToOneField(
-        Group,
-        on_delete=models.CASCADE
-    )
-
-    associated_user=models.OneToOneField(
-        User,
-        on_delete=models.CASCADE
-    )
-
-    total_fine=models.FloatField()
-    fine_count=models.IntegerField()
 

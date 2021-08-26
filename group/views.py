@@ -2,19 +2,22 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate
 from django.shortcuts import render, get_object_or_404
 from .forms import *
-
+from django.core.paginator import Paginator
 # Create your views here.
 
 #전체 groups
 def my_groups(request,group_slug=None):
     current_group=None
-    groups=Group.objects.filter(available_idsplay=True)
+    groups=Group.objects.all()
+    paginator=Paginator(groups,5)
+    page_number=request.GET.get('page')
+    page_obj=paginator.get_page(page_number)
 
     if group_slug:
         current_group=get_object_or_404(Group,slug=group_slug)
         groups=groups.filter(group=current_group)
 
-    return render(request,'my_groups.html',{'current_group':current_group,'groups':groups})
+    return render(request,'my_groups.html',{'page_obj':page_obj, 'current_group':current_group,'groups':groups})
 
 #디테일 per group
 def group_detail(request,group_name,group_slug=None):
@@ -39,8 +42,9 @@ def new_groups(request):
 
     return render(request, 'new_groups.html', {'form': form})
 
-def pay_fine(request):
-    if request.POST:
+def pay_fine(request,group_name,user_id):
+   #later
+    return render(request,'group_detail.html')
 
 
 def edit(request):

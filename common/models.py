@@ -3,35 +3,42 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from group.models import Record
-from common import forms
+
 
 
 class User(AbstractUser):
     #pre-set
 
-    username = models.CharField(max_length=10,unique=True)
+    username = models.CharField(max_length=100,unique=True,default="",primary_key=True)
     password = models.CharField(max_length=100,default="")
 
     #optional
-    email=models.EmailField(_('email address',widget=forms.EmailInput({'placeholder': 'test@example.com'})),unique=True)
+    email=models.EmailField(_('email address'),null=True,unique=True)
 
     USERNAME_FIELD='username'
     PASSWORD_FIELD='password'
     REQUIRED_FIELDS=['email']
 
     #개인 정보
-    phone = models.CharField(max_length=20,default=None)
-    address = models.CharField(max_length=50,default=None)
+    address = models.CharField(max_length=50,default=None,null=True)
 
     #돈
-    balance = models.CharField(max_length=50,default=None)
-    record = models.OnetoManyField(Record, on_delete=models.CASCADE)
-    
+    balance = models.FloatField(max_length=50,default=0,null=True)
+
     #그룹
-    groups=models.ForeignKey(Group,on_delete=models.PROTECT)
+    #그냥 디폴트 있음
+    #후보키는 결국 하나만 되는 거야groups=models.ForeignKey('group.Group',on_delete=models.PROTECT,blank=True)
+    #벌금 관리
+    paid_fine={}
+    '''
+    벌금 count를 할 때 group이름이 key로 없으면 -->paid_fine[그룹이름]=1*그룹의 벌금
+    있으면-->paid_fine[그룹이름]+=1*그룹의 벌금
+     '''
+
     def str(self):
         return self.email
+
+
 '''
 class User(models.Model):
     pass

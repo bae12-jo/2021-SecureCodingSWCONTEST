@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{%block title%}
+    <h1>Welcome {{username}}</h1>
+
+{%endblock%}
+
+
+{%block body%}
+
+    <div class="row">
+        <div class="col-2">
+            <div class="My Groups">
+                <h3>My Groups</h3>
+            </div>
+
+            {% for g in groups %}
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <a href="{{g.get_absolute_url}}">
+                            <h5 class="card-title">{{g.group_name}}</h5>
+                            <p class="card-text">Fine: {{g.fine}}</br>Reward: {{g.reward}}</br>Deposit: {{g.deposit}}</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+
+        </div>
+    </div>
+    {% if groups.has_other_pages %}
+    <ul class="pagination">
+        {% if groups.has_previous %}
+        <li><a href=""?page="{{groups.previous_page_number}}">&laquo;</a></li>
+        {% else %}
+        <li class="disabled"><span>&laquo;</span></li>
+        {% endif %}
+        {% for i in groups.paginator.page_range %}
+            {% if groups.number==i %}
+                <li class="active"><span>{{i}}<span class="sr-only">(current)</span></span></li>
+            {% else %}
+                <li><a href="?page={{i}}">{{i}}</a></li>
+            {% endif%}
+        {% endfor %}
+        {% if groups.has_next %}
+                <li><a href="?page={{groups.next_page_number}}">&raquo;</a></li>
+        {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+        {% endif %}
+    </ul>
+{%endblock %}

@@ -13,6 +13,10 @@ class Group(models.Model):
         (2,' All to the single winner'),
     ]
     reward=models.CharField(choices=REWARD_CHOICES, max_length=100,null=True)
+
+    #detail view를 위한 slug
+    slug=models.SlugField(max_length=200,db_index=True,unique=True, allow_unicode=True)
+
     #사람
 
     teammate=ManyToManyField(
@@ -39,4 +43,22 @@ class Group(models.Model):
     def get_absolute_url(self):
         return reverse('my_groups_detail',args=[str(self.group_name)])
 
+'''
+class Record(models.Model):
+
+    associated_group=models.OneToOneField(
+        Group,
+        on_delete=models.CASCADE
+
+    )
+
+    associated_user=models.OneToOneField(
+        'common.User',
+        on_delete=models.CASCADE,
+
+    )
+
+    total_fine=models.FloatField()
+    fine_count=models.IntegerField()
+    '''
 

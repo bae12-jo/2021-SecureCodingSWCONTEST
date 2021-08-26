@@ -4,14 +4,7 @@ from django.contrib.auth import authenticate
 from .forms import NameForm,RegiForm
 #DataFlair #Views #TemplateInheritance
 # Create your views here.
-def home(request):
-    return render(request, 'base.html')
 
-def other(request):
-    context = {
-    'k1': 'Welcome to the Second page',
-    }
-    return render(request, 'other.html', context)
 
 def login(request):
 
@@ -53,10 +46,3 @@ def registration(request):
         form = RegiForm()
 
     return render(request, 'registration.html', {'form': form})
-
-
-def wallet(request):
-    return render(request,'wallet.html')
-
-def alarm(request):
-    return render(request,'alarm.html')

@@ -144,4 +144,4 @@ LOGIN_REDIRECT_URL = '/qna/list'
 LOGOUT_REDIRECT_URL = '/'
 
 # User »ç¿ë
-AUTH_USER_MODEL = 'common.User'
+# AUTH_USER_MODEL = 'common.User'

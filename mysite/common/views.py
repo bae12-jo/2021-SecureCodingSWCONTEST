@@ -1,6 +1,6 @@
 from django.contrib import auth
 from django.contrib.auth import authenticate, login
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 
 def index(request):
@@ -16,11 +16,10 @@ def signup(request):
     """
     if request.method == 'POST':
         if request.POST['password1'] == request.POST['password2']:
-            User = get_user_model()
-            user = User.object.create_user(
-                            username=request.POST['username'],
-                            password=request.POST['password1'],
-                            email=request.POST['email'],)
+            user = User.objects.create_user(
+                                            username=request.POST['username'],
+                                            password=request.POST['password1'],
+                                            email=request.POST['email'],)
             auth.login(request, user)
             return redirect('/qna/list')
         return render(request, 'signup.html')

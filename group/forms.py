@@ -1,10 +1,20 @@
 from django.forms import ModelForm,Textarea
 from django.utils.translation import gettext_lazy as _
 from .models import Group
+from django import forms
+
+DEMO_TEAMMATE_OPTIONS = [
+    (1, 'Soyoung'),
+    (2, 'Hyemin'),
+    (3, 'Song-ee')
+]
+
+
 def GroupForm(ModelForm):
+    teammate=forms.MultipleChoiceField(choices=DEMO_TEAMMATE_OPTIONS)
     class Meta:
         model=Group
-        fields=('group_name','deposit','fine','reward_method','teammates','rules')
+        fields=['group_name','deposit','fine','reward_method','teammates','rules']
         widgets={
             'rules':Textarea(attrs={'cols':80,'rows':20}),
         }

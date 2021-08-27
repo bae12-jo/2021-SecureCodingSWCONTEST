@@ -23,6 +23,7 @@ def my_groups(request,group_slug=None):
     page_number=request.GET.get('page')
     page_obj=paginator.get_page(page_number)
 
+    #슬러그를 써서 my groups페이지에 group마다 요약 카드를 띄우고 싶었지만 실패!
     if group_slug:
         current_group=get_object_or_404(Group,slug=group_slug)
         groups=groups.filter(group=current_group)
@@ -31,18 +32,22 @@ def my_groups(request,group_slug=None):
 
 #디테일 per group
 '''
+#함수로 된 detail 시도
 def group_detail(request,group_name,group_slug=None):
     group=get_object_or_404(Group,group_name=group_name,slug=group_slug)
     return render(request,'group_detail.html',{'group':group})
 '''
+#generic view로 된 detail 시도
 from django.views.generic import DetailView
 class GroupDetailView(DetailView):
     model=Group
     template_name='group_detail.html'
+    
 #new group
 from django.forms import modelformset_factory
 
 def new_groups(request):
+    #model form을 쓸 때는 인자가 blank일 수 없어서 쓰게 된 함수
     GroupForm=modelformset_factory(Group,fields=('group_name','deposit','fine','reward','rule'))
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
@@ -56,7 +61,7 @@ def new_groups(request):
             obj.save()
             # process the data in form.cleaned_data as required
                 # redirect to a new URL:
-            #자꾸 register로 가는데 왤까?
+            #자꾸 register 페이지로 가는데 왤까?
             return HttpResponseRedirect(reversed('new_groups/'),{'form':form})
 
     # if a GET (or any other method) we'll create a blank form
@@ -88,7 +93,8 @@ def pay_fine(request):
 '''
 
 
-#use Permission mixin decorator for only leader to access
+#**later**use Permission mixin decorator for only leader to access
+#**later**possibly attempt to use django provided Manager model for leaders
 
 def edit(request):
     #disable pay_fine button
